@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import BASE_URL from "../api";
 
 function Register() {
   const [form, setForm] = useState({
@@ -19,9 +20,11 @@ function Register() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000/api/register", form);
+      const res = await axios.post(`${BASE_URL}/api/register`, form);
+
       localStorage.setItem("token", res.data.token);
       navigate("/dashboard");
+
     } catch (err) {
       alert(err.response?.data?.message || "Error");
     }
@@ -29,25 +32,22 @@ function Register() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black">
+      <form onSubmit={handleSubmit} className="bg-gray-900 p-8 rounded-2xl w-96 border border-yellow-600">
 
-      <form className="bg-gray-900 p-8 rounded-2xl shadow-lg w-96 border border-yellow-600">
-
-        <h2 className="text-3xl font-bold text-center text-yellow-400 mb-6">
-          Create Account
-        </h2>
+        <h2 className="text-3xl text-yellow-400 text-center mb-6">Register</h2>
 
         <input
           name="name"
           placeholder="Name"
           onChange={handleChange}
-          className="w-full mb-3 p-3 bg-gray-800 text-white border border-gray-700 rounded"
+          className="w-full mb-3 p-3 bg-gray-800 text-white rounded"
         />
 
         <input
           name="email"
           placeholder="Email"
           onChange={handleChange}
-          className="w-full mb-3 p-3 bg-gray-800 text-white border border-gray-700 rounded"
+          className="w-full mb-3 p-3 bg-gray-800 text-white rounded"
         />
 
         <input
@@ -55,20 +55,17 @@ function Register() {
           type="password"
           placeholder="Password"
           onChange={handleChange}
-          className="w-full mb-4 p-3 bg-gray-800 text-white border border-gray-700 rounded"
+          className="w-full mb-4 p-3 bg-gray-800 text-white rounded"
         />
 
-        <button className="w-full bg-yellow-500 text-black p-3 rounded hover:bg-yellow-400">
+        <button className="w-full bg-yellow-500 text-black p-3 rounded">
           Register
         </button>
 
         <p className="text-gray-400 text-center mt-4">
           Already have an account?{" "}
-          <Link to="/" className="text-yellow-400">
-            Login
-          </Link>
+          <Link to="/" className="text-yellow-400">Login</Link>
         </p>
-
       </form>
     </div>
   );
